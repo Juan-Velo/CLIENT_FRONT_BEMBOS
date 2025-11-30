@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // URL base para el endpoint de pago
-const PAYMENT_API_URL = 'https://b98ebfm5yc.execute-api.us-east-1.amazonaws.com';
+const PAYMENT_API_URL = import.meta.env.VITE_API_PAGOS;
 
 // Obtiene la URL de la variable de entorno (crear archivo .env)
 // Si no existe, usa una URL vacía o localhost para desarrollo

@@ -58,6 +58,8 @@ const Checkout = () => {
         tenant_id: tenantId,
         uuid: orderUUID,
         cliente_email: userEmail,
+        origen: "LIMA - CENTRO, Av. Arequipa 123, Lima",
+        destino: formData.address || "Dirección no especificada",
         fecha_pedido: now.toISOString(),
         fecha_entrega: deliveryTime.toISOString(),
         estado_pedido: "NUEVO",

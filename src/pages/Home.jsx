@@ -14,7 +14,7 @@ const PROMOS = [
     price: 41.90,
     originalPrice: 80.40,
     discount: 47,
-    imageUrl: 'https://www.bembos.com.pe/media/catalog/product/cache/1/small_image/295x/9df78eab33525d08d6e5fb8d27136e95/t/r/trio_a_lo_pobre_1.jpg'
+    imageUrl: 'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=400'
   },
   {
     id: 'p2',
@@ -23,7 +23,7 @@ const PROMOS = [
     price: 19.90,
     originalPrice: 32.70,
     discount: 39,
-    imageUrl: 'https://www.bembos.com.pe/media/catalog/product/cache/1/small_image/295x/9df78eab33525d08d6e5fb8d27136e95/p/r/promo_a_lo_pobre_1.jpg'
+    imageUrl: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400'
   },
   {
     id: 'p3',
@@ -32,7 +32,7 @@ const PROMOS = [
     price: 39.90,
     originalPrice: 71.40,
     discount: 44,
-    imageUrl: 'https://www.bembos.com.pe/media/catalog/product/cache/1/small_image/295x/9df78eab33525d08d6e5fb8d27136e95/c/o/combo_trio.jpg'
+    imageUrl: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400'
   },
   {
     id: 'p4',
@@ -41,7 +41,7 @@ const PROMOS = [
     price: 26.90,
     originalPrice: 60.40,
     discount: 55,
-    imageUrl: 'https://www.bembos.com.pe/media/catalog/product/cache/1/small_image/295x/9df78eab33525d08d6e5fb8d27136e95/d/u/duo_bembos.jpg'
+    imageUrl: 'https://images.unsplash.com/photo-1550547660-d9450f859349?w=400'
   }
 ];
 
@@ -53,7 +53,7 @@ const RECOMMENDED = [
     price: 27.90,
     originalPrice: 49.60,
     discount: 43,
-    imageUrl: 'https://www.bembos.com.pe/media/catalog/product/cache/1/small_image/295x/9df78eab33525d08d6e5fb8d27136e95/d/u/duo_queso_tocino.jpg'
+    imageUrl: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400'
   },
   {
     id: 'r2',
@@ -62,7 +62,7 @@ const RECOMMENDED = [
     price: 16.90,
     originalPrice: 27.80,
     discount: 39,
-    imageUrl: 'https://www.bembos.com.pe/media/catalog/product/cache/1/small_image/295x/9df78eab33525d08d6e5fb8d27136e95/p/e/personal_churrita.jpg'
+    imageUrl: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400'
   }
 ];
 
@@ -74,7 +74,7 @@ const LOS_MAS_VENDIDOS = [
     price: 28.90,
     originalPrice: 60.40,
     discount: 57,
-    imageUrl: 'https://via.placeholder.com/300x200?text=Duo+Sabroso'
+    imageUrl: 'https://images.unsplash.com/photo-1607013251379-e6eecfffe234?w=400'
   },
   {
     id: 'mv2',
@@ -83,7 +83,7 @@ const LOS_MAS_VENDIDOS = [
     price: 21.90,
     originalPrice: 37.70,
     discount: 44,
-    imageUrl: 'https://via.placeholder.com/300x200?text=Doble+Queso'
+    imageUrl: 'https://images.unsplash.com/photo-1596662951482-0c4ba74a6df6?w=400'
   },
   {
     id: 'mv3',
@@ -92,7 +92,7 @@ const LOS_MAS_VENDIDOS = [
     price: 27.90,
     originalPrice: 49.60,
     discount: 43,
-    imageUrl: 'https://via.placeholder.com/300x200?text=Duo+QT'
+    imageUrl: 'https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=400'
   },
   {
     id: 'mv4',
@@ -101,7 +101,7 @@ const LOS_MAS_VENDIDOS = [
     price: 19.90,
     originalPrice: 49.60,
     discount: 60,
-    imageUrl: 'https://via.placeholder.com/300x200?text=Duo+Imperdible'
+    imageUrl: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=400'
   },
   {
     id: 'mv5',
@@ -110,7 +110,7 @@ const LOS_MAS_VENDIDOS = [
     price: 50.90,
     originalPrice: 112.00,
     discount: 54,
-    imageUrl: 'https://via.placeholder.com/300x200?text=Familiar'
+    imageUrl: 'https://images.unsplash.com/photo-1550547660-d9450f859349?w=400'
   }
 ];
 
@@ -200,9 +200,9 @@ const Home = () => {
           </div>
           <div className="md:w-1/2 flex justify-center">
              <img 
-               src="https://www.bembos.com.pe/media/wysiwyg/delivery-zone.png" 
+               src="https://images.unsplash.com/photo-1526367790999-0150786686a2?w=500" 
                alt="Delivery Zone" 
-               className="max-h-[300px] object-contain"
+               className="max-h-[300px] object-contain rounded-lg shadow-lg"
                onError={(e) => e.target.style.display = 'none'}
              />
           </div>
@@ -228,9 +228,9 @@ const Home = () => {
           </div>
           <div className="md:w-1/2 flex justify-center">
              <img 
-               src="https://www.bembos.com.pe/media/wysiwyg/bembos-loyalty.png" 
+               src="https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?w=500" 
                alt="Loyalty Program" 
-               className="max-h-[300px] object-contain"
+               className="max-h-[300px] object-contain rounded-lg shadow-lg"
                onError={(e) => e.target.style.display = 'none'}
              />
           </div>

@@ -320,7 +320,11 @@ const Checkout = () => {
                     ✅ Pedido registrado. Completa el pago abajo:
                   </div>
                   <div className="mercadopago-button-container">
-                    <Wallet initialization={{ preferenceId: preferenceId }} />
+                    <Wallet 
+                      initialization={{ preferenceId: preferenceId, redirectMode: 'self' }} 
+                      onReady={() => console.log("Wallet ready")}
+                      onSubmit={() => console.log("Wallet submitted")}
+                    />
                   </div>
                 </div>
               )}

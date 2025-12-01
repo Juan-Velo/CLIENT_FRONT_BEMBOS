@@ -4,43 +4,43 @@ const categories = [
   {
     id: 1,
     name: 'Semana Bravaza',
-    image: 'https://www.bembos.com.pe/media/wysiwyg/bembos/semana-bravaza.png',
+    image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&q=80',
     link: '/promociones'
   },
   {
     id: 2,
     name: 'Promos Exclusivas',
-    image: 'https://www.bembos.com.pe/media/catalog/category/promos-exclusivas.png',
+    image: 'https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&q=80',
     link: '/promociones'
   },
   {
     id: 3,
     name: 'Combos',
-    image: 'https://www.bembos.com.pe/media/catalog/category/combos.png',
+    image: 'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=500&q=80',
     link: '/menu'
   },
   {
     id: 4,
     name: 'Hamburguesas',
-    image: 'https://www.bembos.com.pe/media/catalog/category/hamburguesas.png',
+    image: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=500&q=80',
     link: '/menu'
   },
   {
     id: 5,
     name: 'Bembos Menús',
-    image: 'https://www.bembos.com.pe/media/catalog/category/bembos-menus.png',
+    image: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=500&q=80',
     link: '/menu'
   },
   {
     id: 6,
     name: 'Pollo',
-    image: 'https://www.bembos.com.pe/media/catalog/category/pollo.png',
+    image: 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500&q=80',
     link: '/menu'
   },
   {
     id: 7,
     name: 'Loncheritas',
-    image: 'https://www.bembos.com.pe/media/catalog/category/loncheritas.png',
+    image: 'https://images.unsplash.com/photo-1561758033-d89a9ad46330?w=500&q=80',
     link: '/menu'
   }
 ];

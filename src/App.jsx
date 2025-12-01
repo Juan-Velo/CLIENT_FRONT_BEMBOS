@@ -13,6 +13,8 @@ import Cupones from './pages/Cupones'
 import Favoritos from './pages/Favoritos'
 import CartDrawer from './components/CartDrawer'
 import { CartProvider } from './context/CartContext'
+import PaymentSuccess from './pages/PaymentSuccess'
+import Orders from './pages/Orders'
 
 function App() {
   return (
@@ -33,6 +35,8 @@ function App() {
               <Route path="/favoritos" element={<Favoritos />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/payment-success" element={<PaymentSuccess />} />
+              <Route path="/pedidos" element={<Orders />} />
             </Routes>
           </main>
         </div>

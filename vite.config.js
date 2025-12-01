@@ -33,10 +33,15 @@ export default defineConfig(({ mode }) => {
           rewrite: (path) => path.replace(/^\/api\/auth/, '/dev/users'),
         },
         '/api/favoritos': {
-          target: env.VITE_API_FAVORITOS,
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api\/favoritos/, '/prod/favoritos'),
-        }
+        target: env.VITE_API_FAVORITOS,
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/favoritos/, '/prod/favoritos'),
+      },
+      '/api/pedidos': {
+        target: env.VITE_API_PEDIDOS,
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/pedidos/, '/pedidos'),
+      }
       }
     }
   }

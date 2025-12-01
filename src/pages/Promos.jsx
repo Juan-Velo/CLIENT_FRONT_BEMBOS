@@ -9,7 +9,7 @@ const PROMOS = [
     price: 41.90,
     originalPrice: 80.40,
     discount: 47,
-    imageUrl: 'https://www.bembos.com.pe/media/catalog/product/cache/1/small_image/295x/9df78eab33525d08d6e5fb8d27136e95/t/r/trio_a_lo_pobre_1.jpg'
+    imageUrl: 'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=400'
   },
   {
     id: 'p2',
@@ -18,7 +18,7 @@ const PROMOS = [
     price: 19.90,
     originalPrice: 32.70,
     discount: 39,
-    imageUrl: 'https://www.bembos.com.pe/media/catalog/product/cache/1/small_image/295x/9df78eab33525d08d6e5fb8d27136e95/p/r/promo_a_lo_pobre_1.jpg'
+    imageUrl: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400'
   },
   {
     id: 'p3',
@@ -27,7 +27,7 @@ const PROMOS = [
     price: 39.90,
     originalPrice: 71.40,
     discount: 44,
-    imageUrl: 'https://www.bembos.com.pe/media/catalog/product/cache/1/small_image/295x/9df78eab33525d08d6e5fb8d27136e95/c/o/combo_trio.jpg'
+    imageUrl: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400'
   },
   {
     id: 'p4',
@@ -36,7 +36,7 @@ const PROMOS = [
     price: 26.90,
     originalPrice: 60.40,
     discount: 55,
-    imageUrl: 'https://www.bembos.com.pe/media/catalog/product/cache/1/small_image/295x/9df78eab33525d08d6e5fb8d27136e95/d/u/duo_bembos.jpg'
+    imageUrl: 'https://images.unsplash.com/photo-1550547660-d9450f859349?w=400'
   }
 ];
 

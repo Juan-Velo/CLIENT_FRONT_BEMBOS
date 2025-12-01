@@ -5,17 +5,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 const banners = [
   {
     id: 1,
-    image: "https://www.bembos.com.pe/media/wysiwyg/bembos/banners/desktop/semana-bravaza-desktop.jpg", // Intentando usar una URL real o similar
+    image: "https://images.unsplash.com/photo-1550547660-d9450f859349?w=1200", 
     alt: "Semana Bravaza"
   },
   {
     id: 2,
-    image: "https://www.bembos.com.pe/media/wysiwyg/bembos/banners/desktop/promos-exclusivas-desktop.jpg",
+    image: "https://images.unsplash.com/photo-1544025162-d76690b67f14?w=1200",
     alt: "Promos Exclusivas"
   },
   {
     id: 3,
-    image: "https://www.bembos.com.pe/media/wysiwyg/bembos/banners/desktop/combos-desktop.jpg",
+    image: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=1200",
     alt: "Combos"
   }
 ];
@@ -46,7 +46,7 @@ const Banner = () => {
   };
 
   return (
-    <div className="relative w-full h-[200px] md:h-[400px] overflow-hidden bg-gray-200 group">
+    <div className="relative w-full h-[500px] md:h-[700px] overflow-hidden bg-gray-900 group">
       <AnimatePresence mode='wait'>
         <motion.div
           key={currentIndex}
@@ -57,14 +57,15 @@ const Banner = () => {
           className="absolute inset-0 w-full h-full"
         >
           {/* Try to render image, if it fails (onError) we could swap, but for now let's assume they might work or use a colored div as placeholder */}
-          <div className={`w-full h-full flex items-center justify-center text-4xl font-bold text-white ${fallbackBanners[currentIndex].color}`}>
+          <div className="w-full h-full flex items-center justify-center text-4xl font-bold text-white bg-gray-900">
              {/* In a real scenario we would use <img /> but since I can't guarantee the URLs, I'll use a styled div that looks like a banner */}
              <img 
                 src={banners[currentIndex].image} 
                 alt={banners[currentIndex].alt}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
                 onError={(e) => {
                     e.target.style.display = 'none';
+                    e.target.parentElement.classList.remove('bg-gray-900');
                     e.target.parentElement.classList.add(fallbackBanners[currentIndex].color);
                     e.target.parentElement.innerText = fallbackBanners[currentIndex].text;
                 }}

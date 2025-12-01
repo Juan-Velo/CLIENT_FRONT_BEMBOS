@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Phone, User, ShoppingCart, Menu, MapPin, Star, Heart, Package, LogOut } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import AuthService from '../services/authService';
+import BembosLogo from '../assets/Bembos_logo.png';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -56,13 +57,13 @@ const Header = () => {
         <div className="container mx-auto flex justify-between items-center gap-4">
           {/* Logo */}
           <div className="shrink-0">
-            <a href="/">
+            <Link to="/">
               <img 
-                src="https://www.bembos.com.pe/media/logo/websites/2/logo-bembos-compress.png" 
+                src={BembosLogo} 
                 alt="Bembos" 
                 className="h-12 md:h-14"
               />
-            </a>
+            </Link>
           </div>
 
           {/* Desktop Menu */}
@@ -155,7 +156,7 @@ const Header = () => {
             <Heart size={14} />
             <span>Mis Favoritos</span>
           </a>
-          <a href="https://www.bembos.com.pe/tracking/order/index/" className="flex items-center gap-1 text-gray-700 hover:text-[#0033A0] transition-colors">
+          <a href="/pedidos" className="flex items-center gap-1 text-gray-700 hover:text-[#0033A0] transition-colors">
             <Package size={14} />
             <span>Sigue tu pedido</span>
           </a>

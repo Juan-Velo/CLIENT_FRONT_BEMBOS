@@ -1,5 +1,6 @@
 import React from 'react';
-import { Facebook, Youtube, Twitter, Instagram } from 'lucide-react';
+import { Facebook, Youtube, Twitter, Instagram, BookOpen } from 'lucide-react';
+import bembosLogo from '../assets/Bembos_logo.png';
 
 const Footer = () => {
   return (
@@ -9,7 +10,7 @@ const Footer = () => {
           {/* Logo and Social */}
           <div>
             <img 
-              src="https://www.bembos.com.pe/media/logo/websites/2/logo-bembos-compress.png" 
+              src={bembosLogo} 
               alt="Bembos" 
               className="h-16 mb-6"
             />
@@ -64,14 +65,10 @@ const Footer = () => {
             <div className="mb-6">
               <h3 className="font-bold text-gray-900 mb-4">Libro de Reclamaciones</h3>
               <a href="https://www.bembos.com.pe/bembos-reclamaciones/" className="inline-block">
-                <img 
-                  src="https://www.bembos.com.pe/media/wysiwyg/libro-reclamaciones.png" 
-                  alt="Libro de Reclamaciones" 
-                  className="h-12"
-                  onError={(e) => {
-                    e.target.src = 'https://via.placeholder.com/120x48?text=Libro+Reclamaciones';
-                  }}
-                />
+                <div className="flex items-center gap-2 bg-gray-100 p-2 rounded-lg hover:bg-gray-200 transition-colors">
+                  <BookOpen size={32} className="text-[#0033A0]" />
+                  <span className="text-xs font-bold text-gray-700">LIBRO DE<br/>RECLAMACIONES</span>
+                </div>
               </a>
             </div>
 

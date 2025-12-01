@@ -5,7 +5,7 @@ const PAYMENT_API_URL = import.meta.env.VITE_API_PAGOS;
 
 // Obtiene la URL de la variable de entorno (crear archivo .env)
 // Si no existe, usa una URL vacía o localhost para desarrollo
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API_BASE_URL = import.meta.env.VITE_API_PEDIDOS || 'http://localhost:3000';
 
 const api = axios.create({
   baseURL: API_BASE_URL,

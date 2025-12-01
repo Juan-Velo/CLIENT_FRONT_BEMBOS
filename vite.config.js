@@ -10,39 +10,5 @@ export default defineConfig(({ mode }) => {
       react(),
       tailwindcss(),
     ],
-    server: {
-      proxy: {
-        '/api/productos': {
-          target: env.VITE_API_PRODUCTOS,
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api\/productos/, '/producto'),
-        },
-        '/api/combos': {
-          target: env.VITE_API_COMBOS,
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api\/combos/, '/combos'),
-        },
-        '/api/locales': {
-          target: env.VITE_API_LOCALES,
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api\/locales/, '/prod/locales'),
-        },
-        '/api/auth': {
-          target: env.VITE_API_AUTH,
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api\/auth/, '/dev/users'),
-        },
-        '/api/favoritos': {
-        target: env.VITE_API_FAVORITOS,
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/favoritos/, '/prod/favoritos'),
-      },
-      '/api/pedidos': {
-        target: env.VITE_API_PEDIDOS,
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/pedidos/, '/pedidos'),
-      }
-      }
-    }
   }
 })

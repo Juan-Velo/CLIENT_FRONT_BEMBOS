@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const LOCALES_API_URL = '/api/locales';
+const LOCALES_API_URL = `${import.meta.env.VITE_API_LOCALES}/prod/locales`;
 
 /**
  * Servicio para manejar las operaciones relacionadas con locales/tiendas

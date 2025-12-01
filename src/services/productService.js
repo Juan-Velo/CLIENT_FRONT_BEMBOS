@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const PRODUCTS_API_URL = '/api/productos';
+const PRODUCTS_API_URL = `${import.meta.env.VITE_API_PRODUCTOS}/producto`;
 
 /**
  * Servicio para manejar las operaciones relacionadas con productos

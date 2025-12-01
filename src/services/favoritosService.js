@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { AuthService } from './authService';
 
-const FAVORITOS_API_URL = '/api/favoritos';
+const FAVORITOS_API_URL = `${import.meta.env.VITE_API_FAVORITOS}/prod/favoritos`;
 
 /**
  * Servicio para manejar las operaciones relacionadas con favoritos

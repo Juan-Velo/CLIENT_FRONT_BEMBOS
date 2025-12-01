@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const COMBOS_API_URL = '/api/combos';
+const COMBOS_API_URL = `${import.meta.env.VITE_API_COMBOS}/combos`;
 
 /**
  * Servicio para manejar las operaciones relacionadas con combos

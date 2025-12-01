@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const AUTH_API_URL = '/api/auth';
+const AUTH_API_URL = `${import.meta.env.VITE_API_AUTH}/dev/users`;
 
 // Clave para almacenar el token en localStorage
 const TOKEN_KEY = 'bembos_auth_token';
@@ -195,8 +195,8 @@ export const AuthService = {
 // Interceptor para agregar el token automáticamente a todas las peticiones
 axios.interceptors.request.use(
   (config) => {
-    // Solo agregar token si la URL es de nuestra API (comienza con /api/)
-    if (config.url && config.url.includes('/api/')) {
+    // Solo agregar token si la URL es de nuestra API
+    if (config.url && (config.url.includes('/api/') || config.url.includes('execute-api'))) {
       const token = AuthService.getToken();
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;

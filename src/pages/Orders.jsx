@@ -35,7 +35,7 @@ const Orders = () => {
         return;
       }
 
-      const response = await axios.get('/api/pedidos/email', {
+      const response = await axios.get(`${import.meta.env.VITE_API_PEDIDOS}/pedidos/email`, {
         params: { cliente_email: email }
       });
 
@@ -66,7 +66,7 @@ const Orders = () => {
 
   const handleOrderClick = async (order) => {
     try {
-      const response = await axios.get('/api/pedidos/id', {
+      const response = await axios.get(`${import.meta.env.VITE_API_PEDIDOS}/pedidos/id`, {
         params: { 
           tenant_id: order.tenant_id,
           uuid: order.uuid

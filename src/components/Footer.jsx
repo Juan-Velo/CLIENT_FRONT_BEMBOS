@@ -1,6 +1,6 @@
 import React from 'react';
 import { Facebook, Youtube, Twitter, Instagram, BookOpen } from 'lucide-react';
-import bembosLogo from '../assets/Bembos_logo.png';
+import bembosLogo from '../assets/Bembos_logo.svg';
 
 const Footer = () => {
   return (

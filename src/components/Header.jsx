@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Phone, User, ShoppingCart, Menu, MapPin, Star, Heart, Package, LogOut } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import AuthService from '../services/authService';
-import BembosLogo from '../assets/Bembos_logo.png';
+import BembosLogo from '../assets/Bembos_logo_white.svg';
 
 const Header = () => {
   const navigate = useNavigate();

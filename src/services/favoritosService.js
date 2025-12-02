@@ -25,7 +25,17 @@ export const FavoritosService = {
         }
       });
       
-      return response.data;
+      // Ensure we return an array
+      if (Array.isArray(response.data)) {
+        return response.data;
+      } else if (response.data && Array.isArray(response.data.favoritos)) {
+        return response.data.favoritos;
+      } else if (response.data && Array.isArray(response.data.data)) {
+        return response.data.data;
+      }
+      
+      console.warn('La respuesta de favoritos no es un array:', response.data);
+      return [];
     } catch (error) {
       console.error('Error al obtener favoritos:', error);
       throw error;

@@ -65,7 +65,7 @@ const Checkout = () => {
         estado_pedido: "NUEVO",
         multiplicador_de_puntos: 1.5,
         delivery: true,
-        imagen_combo_url: cartItems[0]?.imageUrl || "https://http2.mlstatic.com/D_NQ_NP_758475-MLA44085816922_112020-O.webp",
+        imagen_combo_url: cartItems[0]?.imageUrl || import.meta.env.VITE_DEFAULT_COMBO_IMAGE,
         elementos: cartItems.map(item => ({
             combo: [item.name || item.nombre_producto || "Combo"],
             cantidad_combo: item.quantity || 1,

@@ -1,118 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Banner from '../components/Banner';
 import CategoryNav from '../components/CategoryNav';
 import ProductCard from '../components/ProductCard';
 import Footer from '../components/Footer';
+import ComboService from '../services/comboService';
+import ProductService from '../services/productService';
 
-// Mock Data based on Bembos
-const PROMOS = [
-  {
-    id: 'p1',
-    name: 'Trio A lo Pobre',
-    description: '3 A lo Pobre regulares, 3 papas regulares y 3 salsas a elección',
-    price: 41.90,
-    originalPrice: 80.40,
-    discount: 47,
-    imageUrl: 'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=400'
-  },
-  {
-    id: 'p2',
-    name: 'Promo A lo Pobre',
-    description: '1 A lo pobre regular, 1 papa regular, 1 gaseosa personal y 1 salsa',
-    price: 19.90,
-    originalPrice: 32.70,
-    discount: 39,
-    imageUrl: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400'
-  },
-  {
-    id: 'p3',
-    name: 'Combo Trío',
-    description: '1 Royal regular, 2 Cheese regulares, 3 papas regulares',
-    price: 39.90,
-    originalPrice: 71.40,
-    discount: 44,
-    imageUrl: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400'
-  },
-  {
-    id: 'p4',
-    name: 'Dúo Bembos',
-    description: '1 A lo Pobre regular, 1 Churrita regular, 2 papas regulares',
-    price: 26.90,
-    originalPrice: 60.40,
-    discount: 55,
-    imageUrl: 'https://images.unsplash.com/photo-1550547660-d9450f859349?w=400'
-  }
-];
 
-const RECOMMENDED = [
-  {
-    id: 'r1',
-    name: 'Dúo Queso Tocino',
-    description: '2 Queso Tocino regulares, 2 papas medianas',
-    price: 27.90,
-    originalPrice: 49.60,
-    discount: 43,
-    imageUrl: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400'
-  },
-  {
-    id: 'r2',
-    name: 'Personal Churrita',
-    description: '1 Churrita mediana, 1 papa regular',
-    price: 16.90,
-    originalPrice: 27.80,
-    discount: 39,
-    imageUrl: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400'
-  }
-];
-
-const LOS_MAS_VENDIDOS = [
-  {
-    id: 'mv1',
-    name: 'Dúo Sabroso',
-    description: '2 A lo Pobre regulares, 2 papas regulares, 2 gaseosas personales',
-    price: 28.90,
-    originalPrice: 60.40,
-    discount: 57,
-    imageUrl: 'https://images.unsplash.com/photo-1607013251379-e6eecfffe234?w=400'
-  },
-  {
-    id: 'mv2',
-    name: 'Promo Doble Queso Tocino',
-    description: 'Doble hamburguesa a la parrilla, doble queso edam, doble tocino',
-    price: 21.90,
-    originalPrice: 37.70,
-    discount: 44,
-    imageUrl: 'https://images.unsplash.com/photo-1596662951482-0c4ba74a6df6?w=400'
-  },
-  {
-    id: 'mv3',
-    name: 'Dúo Queso Tocino',
-    description: '2 Queso Tocino regulares, 2 papas medianas',
-    price: 27.90,
-    originalPrice: 49.60,
-    discount: 43,
-    imageUrl: 'https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=400'
-  },
-  {
-    id: 'mv4',
-    name: 'Dúo Imperdible',
-    description: '1 Clásica regular, 1 Churrita regular, 2 papas regulares',
-    price: 19.90,
-    originalPrice: 49.60,
-    discount: 60,
-    imageUrl: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=400'
-  },
-  {
-    id: 'mv5',
-    name: 'Familiar Perfecto',
-    description: '2 Clásicas regulares, 2 Cheese regulares, 4 papas regulares',
-    price: 50.90,
-    originalPrice: 112.00,
-    discount: 54,
-    imageUrl: 'https://images.unsplash.com/photo-1550547660-d9450f859349?w=400'
-  }
-];
 
 const ProductCarousel = ({ title, products, bgColor = 'bg-white' }) => {
   const scrollRef = React.useRef(null);
@@ -167,19 +62,74 @@ const ProductCarousel = ({ title, products, bgColor = 'bg-white' }) => {
 };
 
 const Home = () => {
+  const [promos, setPromos] = useState([]);
+  const [recommended, setRecommended] = useState([]);
+  const [bestSellers, setBestSellers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadHomeData = async () => {
+      setLoading(true);
+      try {
+        // 1. Promociones: Promocion_Personal (Combos API)
+        const promosData = await ComboService.getCombosByTenant('Promocion_Personal');
+        setPromos(promosData.map(mapComboToProduct));
+
+        // 2. Recomendados: Hamburguesa (Products API)
+        const recommendedData = await ProductService.getProductsByTenant('Hamburguesa');
+        setRecommended(recommendedData.map(mapProductToProduct));
+
+        // 3. Más Vendidos: Combos (Combos API)
+        const bestSellersData = await ComboService.getCombosByTenant('Combos');
+        setBestSellers(bestSellersData.map(mapComboToProduct));
+
+      } catch (error) {
+        console.error('Error al cargar datos del home:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadHomeData();
+  }, []);
+
+  const mapComboToProduct = (combo) => ({
+    id: combo.nombre,
+    name: combo.nombre.replace(/_/g, ' ').toUpperCase(),
+    description: combo.descripcion,
+    price: combo.precio,
+    stock: combo.stock,
+    imageUrl: combo.imagen,
+    category: 'combos',
+    tenantId: 'Combos',
+    type: 'combo'
+  });
+
+  const mapProductToProduct = (product) => ({
+    id: product.nombre_producto,
+    name: product.nombre_producto.replace(/_/g, ' ').toUpperCase(),
+    description: product.descripcion,
+    price: product.precio,
+    stock: product.stock,
+    imageUrl: product.imagen,
+    category: 'hamburguesas',
+    tenantId: 'Hamburguesa',
+    type: 'product'
+  });
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Banner />
       <CategoryNav />
       
       {/* PROMOCIONES Section */}
-      <ProductCarousel title="PROMOCIONES" products={PROMOS} />
+      <ProductCarousel title="PROMOCIONES" products={promos} />
 
       {/* RECOMENDADOS PARA TI Section */}
-      <ProductCarousel title="RECOMENDADOS PARA TI" products={RECOMMENDED} bgColor="bg-gray-100" />
+      <ProductCarousel title="RECOMENDADOS PARA TI" products={recommended} bgColor="bg-gray-100" />
 
       {/* LOS MÁS VENDIDOS Section */}
-      <ProductCarousel title="LOS MÁS VENDIDOS" products={LOS_MAS_VENDIDOS} />
+      <ProductCarousel title="LOS MÁS VENDIDOS" products={bestSellers} />
 
       {/* Delivery Coverage Section */}
       <section className="bg-[#0033A0] py-12">

@@ -138,8 +138,13 @@ const ProductDetail = () => {
     let total = product.basePrice;
     
     // Agregar precio extra si hay un tamaño seleccionado que no sea el básico
-    if (selectedSize && product.precio_extra && selectedSize !== 'pequeno') {
-      total += product.precio_extra;
+    if (selectedSize && product.precio_extra) {
+      const size = selectedSize.toLowerCase();
+      if (size === 'mediano' || size === 'mediana') {
+        total += product.precio_extra;
+      } else if (size === 'grande') {
+        total += product.precio_extra * 2;
+      }
     }
     
     return total * quantity;
@@ -240,7 +245,7 @@ const ProductDetail = () => {
               alt={product.name}
               className="w-full h-auto rounded-lg object-contain bg-white p-4"
               onError={(e) => {
-                e.target.src = 'https://via.placeholder.com/600x400?text=' + encodeURIComponent(product.name);
+                e.target.src = import.meta.env.VITE_PLACEHOLDER_IMAGE;
               }}
             />
             
@@ -320,9 +325,9 @@ const ProductDetail = () => {
                       }`}
                     >
                       <div className="font-semibold capitalize">{tamano}</div>
-                      {tamano !== 'pequeno' && product.precio_extra > 0 && (
+                      {product.precio_extra > 0 && (tamano.toLowerCase() === 'mediano' || tamano.toLowerCase() === 'mediana' || tamano.toLowerCase() === 'grande') && (
                         <div className="text-sm text-[#0033A0] font-bold mt-1">
-                          +S/ {product.precio_extra.toFixed(2)}
+                          +S/ {(tamano.toLowerCase() === 'grande' ? product.precio_extra * 2 : product.precio_extra).toFixed(2)}
                         </div>
                       )}
                     </button>
@@ -378,10 +383,10 @@ const ProductDetail = () => {
                 <span className="text-gray-700">Subtotal:</span>
                 <span className="font-bold">S/ {(product.basePrice * quantity).toFixed(2)}</span>
               </div>
-              {selectedSize && product.precio_extra > 0 && selectedSize !== 'pequeno' && (
+              {selectedSize && product.precio_extra > 0 && (selectedSize.toLowerCase() === 'mediano' || selectedSize.toLowerCase() === 'mediana' || selectedSize.toLowerCase() === 'grande') && (
                 <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
                   <span>Tamaño extra:</span>
-                  <span>+S/ {(product.precio_extra * quantity).toFixed(2)}</span>
+                  <span>+S/ {((selectedSize.toLowerCase() === 'grande' ? product.precio_extra * 2 : product.precio_extra) * quantity).toFixed(2)}</span>
                 </div>
               )}
               <div className="flex items-center justify-between text-2xl font-bold text-[#0033A0] mt-3">

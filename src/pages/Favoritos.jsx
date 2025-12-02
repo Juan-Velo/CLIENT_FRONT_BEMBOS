@@ -54,7 +54,7 @@ const Favoritos = () => {
       name: favorito.nombre.replace(/_/g, ' ').toUpperCase(),
       description: favorito.descripcion,
       price: favorito.precio,
-      imageUrl: favorito.imagen || 'https://via.placeholder.com/300x200?text=Bembos',
+      imageUrl: favorito.imagen || import.meta.env.VITE_PLACEHOLDER_IMAGE,
       quantity: 1
     };
 
@@ -145,13 +145,27 @@ const Favoritos = () => {
                   className="bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow overflow-hidden border border-gray-200"
                 >
                   {/* Image placeholder */}
-                  <div className="relative h-48 bg-gray-100 flex items-center justify-center">
-                    <Heart size={48} className="text-gray-300" />
+                  <div className="relative h-48 bg-gray-100 flex items-center justify-center overflow-hidden">
+                    {favorito.imagen ? (
+                      <img 
+                        src={favorito.imagen} 
+                        alt={favorito.nombre} 
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          e.target.nextSibling.style.display = 'block';
+                        }}
+                      />
+                    ) : null}
+                    
+                    <div className={`flex items-center justify-center w-full h-full absolute inset-0 ${favorito.imagen ? 'hidden' : ''}`}>
+                      <Heart size={48} className="text-gray-300" />
+                    </div>
                     
                     {/* Remove button */}
                     <button
                       onClick={() => handleRemoveFavorite(favorito)}
-                      className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md hover:shadow-lg transition-all hover:bg-red-50 group"
+                      className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md hover:shadow-lg transition-all hover:bg-red-50 group z-10"
                       title="Eliminar de favoritos"
                     >
                       <Trash2 size={18} className="text-gray-600 group-hover:text-red-600" />

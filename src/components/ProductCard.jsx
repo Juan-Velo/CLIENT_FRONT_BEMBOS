@@ -81,7 +81,7 @@ const ProductCard = ({ product }) => {
       {/* Image Container */}
       <div className="relative h-48 overflow-hidden group bg-white p-4">
         <img 
-          src={product.imageUrl || "https://via.placeholder.com/300x200?text=Bembos+Burger"} 
+          src={product.imageUrl || import.meta.env.VITE_PLACEHOLDER_IMAGE} 
           alt={product.name}
           className="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-300"
         />

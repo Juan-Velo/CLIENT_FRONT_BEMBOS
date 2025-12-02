@@ -6,12 +6,19 @@ const Orders = () => {
   const [activeOrders, setActiveOrders] = useState([]);
   const [historyOrders, setHistoryOrders] = useState([]);
   const [selectedOrderDetails, setSelectedOrderDetails] = useState(null);
+  const [imageError, setImageError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchOrders();
   }, []);
+
+  useEffect(() => {
+    if (selectedOrderDetails) {
+      setImageError(false);
+    }
+  }, [selectedOrderDetails]);
 
   const calculateTotal = (order) => {
     if (order.precio_total) return parseFloat(order.precio_total);
@@ -278,11 +285,15 @@ const Orders = () => {
                 </button>
                 
                 <div className="absolute inset-0 flex items-center justify-center">
-                  {selectedOrderDetails.imagen_combo_url ? (
+                  {selectedOrderDetails.imagen_combo_url && !imageError ? (
                     <img 
                       src={selectedOrderDetails.imagen_combo_url} 
                       alt="Combo" 
                       className="h-40 w-40 object-cover rounded-full border-4 border-white shadow-lg transform hover:scale-105 transition-transform duration-500"
+                      onError={(e) => {
+                        console.error("Error cargando imagen del pedido:", selectedOrderDetails.imagen_combo_url);
+                        setImageError(true);
+                      }}
                     />
                   ) : (
                     <div className="h-32 w-32 bg-white/10 rounded-full flex items-center justify-center border-4 border-white/30 backdrop-blur-sm">

@@ -1,46 +1,59 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ProductCard from '../components/ProductCard';
+import ComboService from '../services/comboService';
 
-const PROMOS = [
-  {
-    id: 'p1',
-    name: 'Trio A lo Pobre',
-    description: '3 A lo Pobre regulares, 3 papas regulares y 3 salsas a elección',
-    price: 41.90,
-    originalPrice: 80.40,
-    discount: 47,
-    imageUrl: 'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=400'
-  },
-  {
-    id: 'p2',
-    name: 'Promo A lo Pobre',
-    description: '1 A lo pobre regular, 1 papa regular, 1 gaseosa personal y 1 salsa',
-    price: 19.90,
-    originalPrice: 32.70,
-    discount: 39,
-    imageUrl: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400'
-  },
-  {
-    id: 'p3',
-    name: 'Combo Trío',
-    description: '1 Royal regular, 2 Cheese regulares, 3 papas regulares',
-    price: 39.90,
-    originalPrice: 71.40,
-    discount: 44,
-    imageUrl: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400'
-  },
-  {
-    id: 'p4',
-    name: 'Dúo Bembos',
-    description: '1 A lo Pobre regular, 1 Churrita regular, 2 papas regulares',
-    price: 26.90,
-    originalPrice: 60.40,
-    discount: 55,
-    imageUrl: 'https://images.unsplash.com/photo-1550547660-d9450f859349?w=400'
-  }
+const PROMO_SECTIONS = [
+  { id: 'compartir', title: 'Para Compartir', tenantId: 'Promociones_para_compartir' },
+  { id: 'para2', title: 'Promociones para 2', tenantId: 'Promociones_para_2' },
+  { id: 'personal', title: 'Promoción Personal', tenantId: 'Promocion_Personal' },
+  { id: 'cupones', title: 'Cupones', tenantId: 'Cupones' }
 ];
 
 const Promos = () => {
+  const [promosData, setPromosData] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const loadAllPromos = async () => {
+      setLoading(true);
+      try {
+        const promises = PROMO_SECTIONS.map(async (section) => {
+          const data = await ComboService.getCombosByTenant(section.tenantId);
+          return {
+            sectionId: section.id,
+            data: data.map(combo => ({
+              id: combo.nombre,
+              name: combo.nombre.replace(/_/g, ' ').toUpperCase(),
+              description: combo.descripcion,
+              price: combo.precio,
+              stock: combo.stock,
+              imageUrl: combo.imagen,
+              category: 'promos',
+              tenantId: section.tenantId,
+              type: 'combo'
+            }))
+          };
+        });
+
+        const results = await Promise.all(promises);
+        const newPromosData = results.reduce((acc, curr) => {
+          acc[curr.sectionId] = curr.data;
+          return acc;
+        }, {});
+
+        setPromosData(newPromosData);
+      } catch (err) {
+        console.error('Error al cargar promociones:', err);
+        setError('Error al cargar las promociones. Por favor, intenta nuevamente.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadAllPromos();
+  }, []);
+
   return (
     <div className="bg-gray-50 min-h-screen py-8">
       <div className="container mx-auto px-4">
@@ -48,15 +61,35 @@ const Promos = () => {
           Promociones Exclusivas
         </h1>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {PROMOS.map(product => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-          {/* Duplicate for demo */}
-          {PROMOS.map(product => (
-            <ProductCard key={`${product.id}-copy`} product={{...product, id: `${product.id}-copy`}} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="flex justify-center items-center py-20">
+            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#0033A0]"></div>
+          </div>
+        ) : error ? (
+          <div className="text-center py-20 text-red-600">
+            <p>{error}</p>
+          </div>
+        ) : (
+          <div className="space-y-12">
+            {PROMO_SECTIONS.map((section) => (
+              <div key={section.id}>
+                <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-[#FFD11A] inline-block pb-1">
+                  {section.title}
+                </h2>
+                
+                {promosData[section.id] && promosData[section.id].length > 0 ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {promosData[section.id].map(product => (
+                      <ProductCard key={product.id} product={product} />
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-gray-500 italic">No hay promociones disponibles en esta categoría.</p>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

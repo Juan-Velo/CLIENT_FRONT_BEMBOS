@@ -35,7 +35,7 @@ function App() {
               <Route path="/favoritos" element={<Favoritos />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/payment-success" element={<PaymentSuccess />} />
+              <Route path="/pago-exitoso" element={<PaymentSuccess />} />
               <Route path="/pedidos" element={<Orders />} />
             </Routes>
           </main>

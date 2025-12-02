@@ -10,6 +10,9 @@ const MENU_CATEGORIES = [
   { id: 'bebidas', name: 'Bebidas', icon: '🥤', tenantId: 'Bebidas', type: 'product' },
   { id: 'extras', name: 'Extras', icon: '🍟', tenantId: 'Extras', type: 'product' },
   { id: 'postres', name: 'Postres', icon: '🍦', tenantId: 'Postres', type: 'product' },
+  { id: 'loncherita', name: 'Loncherita', icon: '🍱', tenantId: 'Loncherita', type: 'combo' },
+  { id: 'pollo', name: 'Pollo', icon: '🍗', tenantId: 'Pollo', type: 'product' },
+  { id: 'bembos_menus', name: 'Bembos Menus', icon: '🍔', tenantId: 'Bembos_Menus', type: 'product' },
 ];
 
 const Menu = () => {

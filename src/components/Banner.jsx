@@ -2,29 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const banners = [
-  {
-    id: 1,
-    image: "https://images.unsplash.com/photo-1550547660-d9450f859349?w=1200", 
-    alt: "Semana Bravaza"
-  },
-  {
-    id: 2,
-    image: "https://images.unsplash.com/photo-1544025162-d76690b67f14?w=1200",
-    alt: "Promos Exclusivas"
-  },
-  {
-    id: 3,
-    image: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=1200",
-    alt: "Combos"
-  }
-];
+// Import local images
+import banner1 from '../assets/carrusel/DESKTOP_1.webp';
+import banner2 from '../assets/carrusel/DESKTOP_11_.webp';
+import banner3 from '../assets/carrusel/DESKTOP_18_.webp';
+import banner4 from '../assets/carrusel/DESKTOP_3_.webp';
+import banner5 from '../assets/carrusel/DESKTOP_4_.webp';
+import banner6 from '../assets/carrusel/DESKTOP_5_.webp';
 
-// Fallback images if the above don't load (using placeholders with Bembos colors)
-const fallbackBanners = [
-  { id: 1, color: "bg-blue-900", text: "SEMANA BRAVAZA" },
-  { id: 2, color: "bg-yellow-500", text: "PROMOS EXCLUSIVAS" },
-  { id: 3, color: "bg-red-600", text: "COMBOS IMPERDIBLES" }
+const banners = [
+  { id: 1, image: banner1, alt: "Banner 1" },
+  { id: 2, image: banner2, alt: "Banner 2" },
+  { id: 3, image: banner3, alt: "Banner 3" },
+  { id: 4, image: banner4, alt: "Banner 4" },
+  { id: 5, image: banner5, alt: "Banner 5" },
+  { id: 6, image: banner6, alt: "Banner 6" }
 ];
 
 const Banner = () => {
@@ -46,7 +38,7 @@ const Banner = () => {
   };
 
   return (
-    <div className="relative w-full h-[500px] md:h-[700px] overflow-hidden bg-gray-900 group">
+    <div className="relative w-full h-[200px] md:h-[350px] overflow-hidden bg-[#F5F5F5] group">
       <AnimatePresence mode='wait'>
         <motion.div
           key={currentIndex}
@@ -56,19 +48,11 @@ const Banner = () => {
           transition={{ duration: 0.5 }}
           className="absolute inset-0 w-full h-full"
         >
-          {/* Try to render image, if it fails (onError) we could swap, but for now let's assume they might work or use a colored div as placeholder */}
-          <div className="w-full h-full flex items-center justify-center text-4xl font-bold text-white bg-gray-900">
-             {/* In a real scenario we would use <img /> but since I can't guarantee the URLs, I'll use a styled div that looks like a banner */}
+          <div className="w-full h-full flex items-center justify-center">
              <img 
                 src={banners[currentIndex].image} 
                 alt={banners[currentIndex].alt}
-                className="w-full h-full object-contain"
-                onError={(e) => {
-                    e.target.style.display = 'none';
-                    e.target.parentElement.classList.remove('bg-gray-900');
-                    e.target.parentElement.classList.add(fallbackBanners[currentIndex].color);
-                    e.target.parentElement.innerText = fallbackBanners[currentIndex].text;
-                }}
+                className="w-full h-full object-cover md:object-contain"
              />
           </div>
         </motion.div>

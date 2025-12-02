@@ -19,6 +19,8 @@ const Cupones = () => {
           name: combo.nombre.replace(/_/g, ' ').toUpperCase(),
           description: combo.descripcion,
           price: combo.precio,
+          originalPrice: combo.porcentaje > 0 ? combo.precio / (1 - combo.porcentaje / 100) : null,
+          discount: combo.porcentaje > 0 ? combo.porcentaje : null,
           stock: combo.stock,
           imageUrl: combo.imagen,
           category: 'cupones',

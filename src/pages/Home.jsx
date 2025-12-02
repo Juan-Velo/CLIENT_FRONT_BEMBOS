@@ -73,7 +73,7 @@ const Home = () => {
       try {
         // 1. Promociones: Promocion_Personal (Combos API)
         const promosData = await ComboService.getCombosByTenant('Promocion_Personal');
-        setPromos(promosData.map(mapComboToProduct));
+        setPromos(promosData.map(c => mapComboToProduct(c, 'Promocion_Personal')));
 
         // 2. Recomendados: Hamburguesa (Products API)
         const recommendedData = await ProductService.getProductsByTenant('Hamburguesa');
@@ -81,7 +81,7 @@ const Home = () => {
 
         // 3. Más Vendidos: Combos (Combos API)
         const bestSellersData = await ComboService.getCombosByTenant('Combos');
-        setBestSellers(bestSellersData.map(mapComboToProduct));
+        setBestSellers(bestSellersData.map(c => mapComboToProduct(c, 'Combos')));
 
       } catch (error) {
         console.error('Error al cargar datos del home:', error);
@@ -93,15 +93,16 @@ const Home = () => {
     loadHomeData();
   }, []);
 
-  const mapComboToProduct = (combo) => ({
+  const mapComboToProduct = (combo, tenantId = 'Combos') => ({
     id: combo.nombre,
     name: combo.nombre.replace(/_/g, ' ').toUpperCase(),
     description: combo.descripcion,
     price: combo.precio,
-    stock: combo.stock,
+    originalPrice: combo.porcentaje > 0 ? combo.precio / (1 - combo.porcentaje / 100) : null,
+    discount: combo.porcentaje > 0 ? combo.porcentaje : null,
     imageUrl: combo.imagen,
-    category: 'combos',
-    tenantId: 'Combos',
+    stock: combo.stock,
+    tenantId: tenantId,
     type: 'combo'
   });
 
@@ -178,7 +179,7 @@ const Home = () => {
           </div>
           <div className="md:w-1/2 flex justify-center">
              <img 
-               src="https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?w=500" 
+               src="https://bucket-bembos-utec.s3.amazonaws.com/imagenes_decoracion/banner_relacion.png" 
                alt="Loyalty Program" 
                className="max-h-[300px] object-contain rounded-lg shadow-lg"
                onError={(e) => e.target.style.display = 'none'}

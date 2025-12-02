@@ -1,77 +1,117 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+// Import local images for buttons
+import imgPromos from '../assets/botones/CATEGORIA_DESKTOP_-_PROMOS_EXCL.webp';
+import imgCombos from '../assets/botones/CATEGORIA_DESKTOP_-_COMBOS.webp';
+import imgHamburguesas from '../assets/botones/CATEGORIA_DESKTOP_-_HAMBURGUESA.webp';
+import imgMenus from '../assets/botones/CATEGORIA_DESKTOP_-_MENUS.webp';
+import imgPollo from '../assets/botones/CATEGORIA_DESKTOP_-_POLLO.webp';
+import imgLoncheritas from '../assets/botones/Loncherita_hamburguesa_384x320.webp';
+import imgComplementos from '../assets/botones/CATEGORIA_DESKTOP_-_COMPLEMENTOS_3.webp';
 
 const categories = [
   {
     id: 1,
     name: 'Semana Bravaza',
-    image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&q=80',
+    image: imgComplementos, // Using complementos as placeholder for Semana Bravaza
     link: '/promociones'
   },
   {
     id: 2,
     name: 'Promos Exclusivas',
-    image: 'https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&q=80',
+    image: imgPromos,
     link: '/promociones'
   },
   {
     id: 3,
     name: 'Combos',
-    image: 'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=500&q=80',
+    image: imgCombos,
     link: '/menu'
   },
   {
     id: 4,
     name: 'Hamburguesas',
-    image: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=500&q=80',
+    image: imgHamburguesas,
     link: '/menu'
   },
   {
     id: 5,
     name: 'Bembos Menús',
-    image: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=500&q=80',
+    image: imgMenus,
     link: '/menu'
   },
   {
     id: 6,
     name: 'Pollo',
-    image: 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500&q=80',
+    image: imgPollo,
     link: '/menu'
   },
   {
     id: 7,
     name: 'Loncheritas',
-    image: 'https://images.unsplash.com/photo-1561758033-d89a9ad46330?w=500&q=80',
+    image: imgLoncheritas,
     link: '/menu'
   }
 ];
 
 const CategoryNav = () => {
+  const scrollRef = useRef(null);
+
+  const scroll = (direction) => {
+    if (scrollRef.current) {
+      const scrollAmount = 300;
+      scrollRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   return (
-    <div className="bg-white py-6 border-b border-gray-200">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center gap-4 overflow-x-auto scrollbar-hide pb-2">
+    <div className="bg-white py-6 border-b border-gray-200 relative">
+      <div className="container mx-auto px-4 md:px-12 relative">
+        
+        {/* Left Navigation Button */}
+        <button 
+          onClick={() => scroll('left')}
+          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white border border-gray-300 rounded-full p-2 shadow-md hover:bg-gray-50 text-[#0033A0] hidden md:flex transition-transform hover:scale-110"
+          aria-label="Scroll left"
+        >
+          <ChevronLeft size={24} />
+        </button>
+
+        <div 
+          ref={scrollRef}
+          className="flex items-center justify-start gap-4 overflow-x-auto no-scrollbar pb-2 scroll-smooth"
+        >
           {categories.map((category) => (
             <a
               key={category.id}
               href={category.link}
-              className="flex flex-col items-center min-w-[120px] group"
+              className="flex items-center gap-3 bg-white border border-gray-300 rounded-full px-6 py-3 shadow-sm hover:shadow-md hover:border-[#0033A0] transition-all min-w-max group"
             >
-              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-transparent group-hover:border-[#0033A0] transition-all mb-2">
-                <img
-                  src={category.image}
-                  alt={category.name}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.target.src = 'https://via.placeholder.com/80x80?text=' + category.name.charAt(0);
-                  }}
-                />
-              </div>
-              <span className="text-xs font-semibold text-gray-800 text-center group-hover:text-[#0033A0] transition-colors">
+              <span className="text-lg font-bold text-gray-700 group-hover:text-[#0033A0] transition-colors whitespace-nowrap">
                 {category.name}
               </span>
+              <img
+                src={category.image}
+                alt={category.name}
+                className="w-12 h-12 object-contain"
+              />
             </a>
           ))}
         </div>
+
+        {/* Right Navigation Button */}
+        <button 
+          onClick={() => scroll('right')}
+          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white border border-gray-300 rounded-full p-2 shadow-md hover:bg-gray-50 text-[#0033A0] hidden md:flex transition-transform hover:scale-110"
+          aria-label="Scroll right"
+        >
+          <ChevronRight size={24} />
+        </button>
+
       </div>
     </div>
   );

@@ -68,40 +68,116 @@ const ProductDetail = () => {
         let detectedTenantId = urlTenantId;
         let detectedType = urlType;
         
-        // Si no tenemos el tenantId, intentar detectarlo
+        // Lógica de detección automática si no viene en el state
         if (!detectedTenantId) {
-          // Por defecto, asumir que es un producto de hamburguesas
-          detectedTenantId = 'Hamburguesa';
-          detectedType = 'product';
+          const lowerId = productId.toLowerCase();
+          if (lowerId.includes('loncherita')) {
+            detectedTenantId = 'Loncherita';
+            detectedType = 'combo';
+          } else if (lowerId.includes('black_friday') || lowerId.includes('promo_personal')) {
+            detectedTenantId = 'Promocion_Personal';
+            detectedType = 'combo';
+          } else if (lowerId.includes('promo_doble') || lowerId.includes('para_2')) {
+            detectedTenantId = 'Promociones_para_2';
+            detectedType = 'combo';
+          } else if (lowerId.includes('familiar') && !lowerId.includes('yape')) {
+            detectedTenantId = 'Promociones_para_compartir';
+            detectedType = 'combo';
+          } else if (lowerId.includes('yape') || lowerId.includes('entel') || lowerId.includes('cupon')) {
+            detectedTenantId = 'Cupones';
+            detectedType = 'combo';
+          } else {
+            // Por defecto, asumir que es un producto de hamburguesas
+            detectedTenantId = 'Hamburguesa';
+            detectedType = 'product';
+          }
         }
         
         let data;
         
+        // Función auxiliar para intentar cargar combo de diferentes tenants si falla
+        const fetchComboWithFallback = async (initialTenant) => {
+          const tenantsToTry = [
+            initialTenant,
+            'Combos',
+            'Loncherita',
+            'Promocion_Personal',
+            'Promociones_para_2',
+            'Promociones_para_compartir',
+            'Cupones'
+          ];
+          
+          // Eliminar duplicados y nulos
+          const uniqueTenants = [...new Set(tenantsToTry.filter(Boolean))];
+          
+          for (const tenant of uniqueTenants) {
+            try {
+              const result = await ComboService.getComboDetail(tenant, productId);
+              if (result) return { data: result, tenantId: tenant };
+            } catch (e) {
+              // Continuar al siguiente tenant
+              continue;
+            }
+          }
+          throw new Error('Producto no encontrado en ninguna categoría de combos');
+        };
+
         if (detectedType === 'combo') {
-          data = await ComboService.getComboDetail('Combos', productId);
+          const result = await fetchComboWithFallback(detectedTenantId);
+          data = result.data;
+          detectedTenantId = result.tenantId; // Actualizar con el tenant real donde se encontró
+
           setProduct({
             id: data.nombre,
             name: data.nombre.replace(/_/g, ' ').toUpperCase(),
             description: data.descripcion,
             basePrice: data.precio,
             price: data.precio,
+            originalPrice: data.porcentaje > 0 ? data.precio / (1 - data.porcentaje / 100) : null,
+            discount: data.porcentaje > 0 ? data.porcentaje : null,
             image: data.imagen,
             stock: data.stock,
             tipo_promocion: data.tipo_promocion,
             porcentaje: data.porcentaje,
             productos: data.Productos,
             puntos_relacion: data.puntos_relacion,
-            tenantId: 'Combos',
+            tenantId: detectedTenantId,
             type: 'combo'
           });
         } else {
-          data = await ProductService.getProductDetail(detectedTenantId, productId);
+          // Lógica similar para productos si fuera necesario, pero por ahora mantenemos simple
+          try {
+            data = await ProductService.getProductDetail(detectedTenantId, productId);
+          } catch (err) {
+            // Si falla en Hamburguesa, intentar en otras categorías comunes
+            if (detectedTenantId === 'Hamburguesa') {
+               try {
+                 data = await ProductService.getProductDetail('Pollo', productId);
+                 detectedTenantId = 'Pollo';
+               } catch (e2) {
+                 throw err; // Lanzar el error original si falla también
+               }
+            } else {
+              throw err;
+            }
+          }
+
+          // Calcular precio original si hay descuento
+          let originalPrice = null;
+          if (data.porcentaje && data.porcentaje > 0) {
+            // Asumimos que para productos también viene en 0-100 si es consistente con combos
+            // Pero verificamos si es < 1 (decimal) o > 1 (entero)
+            const pct = data.porcentaje > 1 ? data.porcentaje / 100 : data.porcentaje;
+            originalPrice = data.precio / (1 - pct);
+          }
+
           setProduct({
             id: data.nombre_producto,
             name: data.nombre_producto.replace(/_/g, ' ').toUpperCase(),
             description: data.descripcion,
             basePrice: data.precio,
             price: data.precio,
+            originalPrice: originalPrice,
             image: data.imagen,
             stock: data.stock,
             tipo_promocion: data.tipo_promocion,

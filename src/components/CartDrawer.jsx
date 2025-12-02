@@ -64,7 +64,7 @@ const CartDrawer = () => {
                         src={item.imageUrl || item.image} 
                         alt={item.name} 
                         className="w-20 h-20 object-cover rounded-md"
-                        onError={(e) => e.target.src = 'https://via.placeholder.com/80x80?text=Producto'}
+                        onError={(e) => e.target.src = 'https://placehold.co/80x80?text=Producto'}
                       />
                       <div className="flex-1">
                         <h3 className="font-bold text-[#193058] text-sm line-clamp-2">{item.name}</h3>

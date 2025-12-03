@@ -27,31 +27,31 @@ const categories = [
     id: 3,
     name: 'Combos',
     image: imgCombos,
-    link: '/menu'
+    link: '/menu#combos'
   },
   {
     id: 4,
     name: 'Hamburguesas',
     image: imgHamburguesas,
-    link: '/menu'
+    link: '/menu#hamburguesas'
   },
   {
     id: 5,
     name: 'Bembos Menús',
     image: imgMenus,
-    link: '/menu'
+    link: '/menu#bembos_menus'
   },
   {
     id: 6,
     name: 'Pollo',
     image: imgPollo,
-    link: '/menu'
+    link: '/menu#pollo'
   },
   {
     id: 7,
     name: 'Loncheritas',
     image: imgLoncheritas,
-    link: '/menu'
+    link: '/menu#loncherita'
   }
 ];
 

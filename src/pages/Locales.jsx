@@ -50,15 +50,7 @@ const Locales = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header Banner */}
-      <div className="bg-[#FFD11A] py-2 px-4">
-        <div className="container mx-auto">
-          <p className="text-[#193058] text-sm font-semibold text-center">
-            ¡Comienza tu pedido! Elige tu dirección
-          </p>
-        </div>
-      </div>
-
+      
       <div className="container mx-auto px-4 py-8">
         {/* Page Title */}
         <div className="text-center mb-8">

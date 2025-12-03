@@ -1,26 +1,53 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import ProductService from '../services/productService';
 import ComboService from '../services/comboService';
 
+// Import local images for buttons
+import imgCombos from '../assets/botones/CATEGORIA_DESKTOP_-_COMBOS.webp';
+import imgHamburguesas from '../assets/botones/CATEGORIA_DESKTOP_-_HAMBURGUESA.webp';
+import imgMenus from '../assets/botones/CATEGORIA_DESKTOP_-_MENUS.webp';
+import imgPollo from '../assets/botones/CATEGORIA_DESKTOP_-_POLLO.webp';
+import imgLoncheritas from '../assets/botones/Loncherita_hamburguesa_384x320.webp';
+import imgComplementos from '../assets/botones/CATEGORIA_DESKTOP_-_COMPLEMENTOS_3.webp';
+
 // Mapeo de categorías a tenant_ids del backend
 const MENU_CATEGORIES = [
-  { id: 'combos', name: 'Combos', icon: '🍔', tenantId: 'Combos', type: 'combo' },
-  { id: 'hamburguesas', name: 'Hamburguesas', icon: '🍔', tenantId: 'Hamburguesa', type: 'product' },
-  { id: 'bebidas', name: 'Bebidas', icon: '🥤', tenantId: 'Bebidas', type: 'product' },
-  { id: 'extras', name: 'Extras', icon: '🍟', tenantId: 'Extras', type: 'product' },
-  { id: 'postres', name: 'Postres', icon: '🍦', tenantId: 'Postres', type: 'product' },
-  { id: 'loncherita', name: 'Loncherita', icon: '🍱', tenantId: 'Loncherita', type: 'combo' },
-  { id: 'pollo', name: 'Pollo', icon: '🍗', tenantId: 'Pollo', type: 'product' },
-  { id: 'bembos_menus', name: 'Bembos Menus', icon: '🍔', tenantId: 'Bembos_Menus', type: 'product' },
+  { id: 'combos', name: 'Combos', image: imgCombos, tenantId: 'Combos', type: 'combo' },
+  { id: 'hamburguesas', name: 'Hamburguesas', image: imgHamburguesas, tenantId: 'Hamburguesa', type: 'product' },
+  { id: 'extras', name: 'Extras', image: imgComplementos, tenantId: 'Extras', type: 'product' },
+  { id: 'loncherita', name: 'Loncherita', image: imgLoncheritas, tenantId: 'Loncherita', type: 'combo' },
+  { id: 'pollo', name: 'Pollo', image: imgPollo, tenantId: 'Pollo', type: 'product' },
+  { id: 'bembos_menus', name: 'Bembos Menus', image: imgMenus, tenantId: 'Bembos_Menus', type: 'product' },
 ];
 
 const Menu = () => {
-  const [activeCategory, setActiveCategory] = useState('hamburguesas');
+  const location = useLocation();
+  
+  // Initialize activeCategory based on URL hash
+  const [activeCategory, setActiveCategory] = useState(() => {
+    const hash = location.hash.replace('#', '');
+    const categoryExists = MENU_CATEGORIES.some(cat => cat.id === hash);
+    return categoryExists ? hash : 'hamburguesas';
+  });
+
   const [activeSubFilter, setActiveSubFilter] = useState('todos');
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  // Handle URL hash changes
+  useEffect(() => {
+    const hash = location.hash.replace('#', '');
+    if (hash) {
+      // Verify if category exists in our list
+      const categoryExists = MENU_CATEGORIES.some(cat => cat.id === hash);
+      if (categoryExists) {
+        setActiveCategory(hash);
+      }
+    }
+  }, [location]);
 
   // Cargar productos cuando cambia la categoría
   useEffect(() => {
@@ -38,7 +65,36 @@ const Menu = () => {
 
         let data = [];
         
-        if (currentCategory.type === 'combo') {
+        if (activeCategory === 'extras') {
+          let tenants = [];
+          if (activeSubFilter === 'todos') {
+            tenants = ['Extras', 'Bebidas', 'Postres'];
+          } else if (activeSubFilter === 'complementos') {
+            tenants = ['Extras'];
+          } else if (activeSubFilter === 'bebidas') {
+            tenants = ['Bebidas'];
+          } else if (activeSubFilter === 'postres') {
+            tenants = ['Postres'];
+          }
+
+          const promises = tenants.map(async (tenant) => {
+            const products = await ProductService.getProductsByTenant(tenant);
+            return products.map(product => ({
+              id: product.nombre_producto,
+              name: product.nombre_producto.replace(/_/g, ' ').toUpperCase(),
+              description: product.descripcion,
+              price: product.precio,
+              stock: product.stock,
+              imageUrl: product.imagen,
+              category: activeCategory,
+              tenantId: tenant,
+              type: 'product'
+            }));
+          });
+
+          const results = await Promise.all(promises);
+          data = results.flat();
+        } else if (currentCategory.type === 'combo') {
           // Cargar combos
           data = await ComboService.getCombosByTenant(currentCategory.tenantId);
           // Mapear datos de combo al formato esperado por ProductCard
@@ -81,23 +137,22 @@ const Menu = () => {
     };
 
     loadProducts();
-  }, [activeCategory]);
+  }, [activeCategory, activeSubFilter]);
 
   const currentCategory = MENU_CATEGORIES.find(cat => cat.id === activeCategory);
   const productsToShow = products;
 
-  // Subfiltros deshabilitados por ahora (se pueden implementar con filtrado en el frontend)
-  const subFilters = [];
+  // Subfiltros para la categoría Extras
+  const subFilters = activeCategory === 'extras' ? [
+    { id: 'todos', name: 'Todos' },
+    { id: 'complementos', name: 'Complementos' },
+    { id: 'bebidas', name: 'Bebidas' },
+    { id: 'postres', name: 'Postres' }
+  ] : [];
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      {/* Yellow CTA Bar */}
-      <div className="bg-[#FFD11A] py-3 px-4">
-        <div className="container mx-auto flex items-center justify-center gap-2 text-sm">
-          <span className="text-[#193058] font-semibold">¡Comienza tu pedido! Elige tu dirección</span>
-        </div>
-      </div>
-
+      
       <div className="container mx-auto px-4 py-6">
         {/* Navegación de categorías con iconos */}
         <div className="bg-white rounded-lg shadow-sm p-4 mb-6 overflow-x-auto">
@@ -108,6 +163,7 @@ const Menu = () => {
                 onClick={() => {
                   setActiveCategory(category.id);
                   setActiveSubFilter('todos');
+                  window.location.hash = category.id;
                 }}
                 className={`flex flex-col items-center min-w-[100px] p-3 rounded-lg transition-all ${
                   activeCategory === category.id
@@ -115,8 +171,16 @@ const Menu = () => {
                     : 'hover:bg-gray-100'
                 }`}
               >
-                <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center mb-2 border-2 border-gray-200">
-                  <span className="text-3xl">{category.icon}</span>
+                <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center mb-2 border-2 border-gray-200 overflow-hidden">
+                  {category.image ? (
+                    <img 
+                      src={category.image} 
+                      alt={category.name} 
+                      className="w-full h-full object-contain p-1"
+                    />
+                  ) : (
+                    <span className="text-3xl">{category.icon}</span>
+                  )}
                 </div>
                 <span className="text-xs font-semibold text-center leading-tight">
                   {category.name}
